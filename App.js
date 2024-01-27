@@ -19,31 +19,45 @@ export default function App() {
     digital_counter_7: require("./assets/fonts/digital_counter_7.ttf"),
   });
   const restart = () => Alert.alert("Contadores Reiniciados");
+
   return (
-    <SafeAreaView style={[styles.container, GlobalStyles.droidSafeArea]}>
+    <SafeAreaView
+      style={[GlobalStyles.droidSafeArea]}
+      className="flex-1 items-center justify-between dark:bg-slate-900  "
+    >
       <StatusBar /* barStyle={"light-content"} */ />
       <View style={styles.basicDataBar}>
-        <View className="flex-1  h-full justify-center items-start bg-green-300 dark:bg-white ">
-          <Text> Barsignal</Text>
+        <View className=" flex-1  h-full justify-center items-start   ">
+          <Text className="text-gray-900 dark:text-white "> Barsignal</Text>
         </View>
-        <View style={styles.barBatery}>
-          <Text>BarBatery</Text>
+        <View className=" flex-1  h-full justify-center items-center    ">
+          <Text className="text-gray-900 dark:text-white ">BarBatery</Text>
         </View>
-        <View style={styles.barSatelital}>
-          <Text>BarSatelital</Text>
+        <View className=" flex-1  h-full justify-center items-end ">
+          <Text className="text-gray-900 dark:text-white ">BarSatelital</Text>
+        </View>
+        <View className="flex-row items-center  ">
+          <Text className=" dark:text-white mr-2 ">Light</Text>
+          <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} />
+          <Text className=" dark:text-white ml-2">Dark</Text>
         </View>
       </View>
-      <View style={styles.avgSpeed}>
-        <Text style={styles.avgSpeedText}>100.000</Text>
+      <View className="h-2/5 w-full, justify-center items-center ">
+        <Text
+          className="text-8xl text-gray-900 dark:text-teal-400 "
+          style={styles.avgSpeedText}
+        >
+          100.000
+        </Text>
       </View>
       <View style={styles.runDataContainer}>
-        <View style={styles.instaSpeed}>
+        <View className="bg-slate-800 rounded-lg flex-1  ">
           <Text style={{ color: "#8B849A" }}>Velocidad</Text>
         </View>
-        <View style={styles.distance}>
+        <View className="bg-slate-800 rounded-lg flex-1  ">
           <Text style={{ color: "#8B849A" }}>Distancia</Text>
         </View>
-        <View style={styles.maxSpeed}>
+        <View className="bg-slate-800 rounded-lg flex-1  ">
           <Text style={{ color: "#8B849A", flex: 1 }}>Vel Maxima</Text>
           <View
             style={{
@@ -83,50 +97,23 @@ export default function App() {
           </View>
         </View>
       </View>
-
-      <View style={styles.restartButton}>
+      <View>
         <Button title="restart" onPress={restart} />
-        <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} />
+
+        <Button title="Iniciar" />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
   basicDataBar: {
-    backgroundColor: "red",
     marginTop: 20,
     height: 30,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-  },
-  barSignal: {
-    backgroundColor: "green",
-    height: "100%",
-    flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  barBatery: {
-    backgroundColor: "yellow",
-    height: "100%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  barSatelital: {
-    backgroundColor: "brown",
-    height: "100%",
-    flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
   },
   avgSpeed: {
     height: "40%",
@@ -135,8 +122,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avgSpeedText: {
-    fontSize: 110,
-    color: "#49D4C6",
     fontFamily: "digital_counter_7",
   },
   runDataContainer: {
@@ -144,21 +129,6 @@ const styles = StyleSheet.create({
     height: 140,
     gap: 5,
     padding: 5,
-  },
-  instaSpeed: {
-    flex: 1,
-    backgroundColor: "#202231",
-    borderRadius: 10,
-  },
-  distance: {
-    backgroundColor: "#202232",
-    flex: 1,
-    borderRadius: 10,
-  },
-  maxSpeed: {
-    backgroundColor: "#202231",
-    borderRadius: 10,
-    flex: 1,
   },
 
   text: {
@@ -170,6 +140,6 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     textAlign: "center",
-    backgroundColor: "white",
+    backgroundColor: "red",
   },
 });
