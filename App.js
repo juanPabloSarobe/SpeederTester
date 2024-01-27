@@ -7,19 +7,23 @@ import {
   Alert,
   SafeAreaView,
   StatusBar,
+  Switch,
 } from "react-native";
 import { useFonts } from "expo-font";
+import { useColorScheme } from "nativewind";
 
 export default function App() {
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+
   const [fontLoaded] = useFonts({
     digital_counter_7: require("./assets/fonts/digital_counter_7.ttf"),
   });
   const restart = () => Alert.alert("Contadores Reiniciados");
   return (
     <SafeAreaView style={[styles.container, GlobalStyles.droidSafeArea]}>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar /* barStyle={"light-content"} */ />
       <View style={styles.basicDataBar}>
-        <View style={styles.barSignal}>
+        <View className="flex-1  h-full justify-center items-start bg-green-300 dark:bg-white ">
           <Text> Barsignal</Text>
         </View>
         <View style={styles.barBatery}>
@@ -82,6 +86,7 @@ export default function App() {
 
       <View style={styles.restartButton}>
         <Button title="restart" onPress={restart} />
+        <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} />
       </View>
     </SafeAreaView>
   );
