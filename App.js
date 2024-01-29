@@ -265,7 +265,7 @@ export default function App() {
                     data={stadistics}
                     keyExtractor={(item) => item.time}
                     renderItem={({ item }) => (
-                      <View className="flex-row gap-2 justify-evenly items-center my-2 h-12  bg-white dark:bg-slate-800">
+                      <View className="flex-row gap-2 rounded-md justify-evenly items-center m-2 pb-2 h-14  bg-white dark:bg-slate-800">
                         <Text className=" text-slate-900 dark:text-slate-100 text-xl">
                           {item.time}
                         </Text>
