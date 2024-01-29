@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Modal, StyleSheet } from "react-native";
 
-const CountDown = ({ isVisible, onCountdownEnd, startRace }) => {
+const CountDown = ({ isVisible, onCountdownEnd }) => {
   const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {

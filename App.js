@@ -107,7 +107,7 @@ export default function App() {
       className="flex-1 items-center justify-between dark:bg-slate-900  "
     >
       <StatusBar />
-      <View style={styles.basicDataBar}>
+      <View className="mt-2 h-8  w-full flex-row items-center justify-around ">
         <View className=" flex-1  h-full justify-center items-start   ">
           <Text className="text-gray-900 dark:text-white "> Barsignal</Text>
         </View>
@@ -118,7 +118,7 @@ export default function App() {
           <Text className="text-gray-900 dark:text-white ">BarSatelital</Text>
         </View>
         <View className="flex-row items-center  ">
-          <Text className=" dark:text-white mr-2 ">Light</Text>
+          <Text className=" dark:text-white ml-2 ">Light</Text>
           <Switch value={colorScheme == "dark"} onChange={toggleColorScheme} />
           <Text className=" dark:text-white ml-2">Dark</Text>
         </View>
@@ -126,7 +126,7 @@ export default function App() {
       <View className="h-2/5 w-full, justify-center items-center ">
         <Text
           className="text-8xl text-gray-900 dark:text-teal-400 "
-          style={styles.avgSpeedText}
+          style={{ fontFamily: "digital_counter_7" }}
         >
           {avgSpeed}
         </Text>
@@ -164,7 +164,7 @@ export default function App() {
         })}
       </View>
 
-      <View className="flex-row justify-evenly m-2 ">
+      <View className="flex-row justify-evenly m-2 gap-1 ">
         <View className="w-1/3">
           {startRace ? (
             <>
@@ -185,13 +185,16 @@ export default function App() {
                 <CountDown
                   isVisible={countDownModalVisible}
                   onCountdownEnd={() => handleCountdownEnd()}
-                  startRace={startRace}
                 />
               )}
             </>
           )}
         </View>
-        <View className="w-1/4"></View>
+        <View className="w-1/4">
+          {!startRace && speedList.length > 1 && (
+            <Button title="ver datos" color="grey" />
+          )}
+        </View>
         <View className="w-1/3">
           <Button title="restart" onPress={resetCounters} />
         </View>
@@ -209,26 +212,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
-  avgSpeed: {
-    height: "40%",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avgSpeedText: {
-    fontFamily: "digital_counter_7",
-  },
-  runDataContainer: {},
 
   text: {
     fontSize: 48,
     textAlign: "center",
-  },
-  restartButton: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-    textAlign: "center",
-    backgroundColor: "red",
   },
 });
