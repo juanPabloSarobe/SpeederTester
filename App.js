@@ -7,11 +7,14 @@ import {
   SafeAreaView,
   StatusBar,
   Switch,
+  Modal,
+  FlatList,
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
 import CountDown from "./components/common/CountDown";
+import nextId from "react-id-generator";
 
 export default function App() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -28,6 +31,12 @@ export default function App() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [distance, setDistance] = useState(0);
   const [countDownModalVisible, setCountDownModalVisible] = useState(false);
+  const [stadistics, setStadistics] = useState([]);
+
+  // lista de velocidadades
+  const [isVisibleSpeedList, setisVisibleSpeedList] = useState(false);
+
+  const handleModalSpeedList = () => setisVisibleSpeedList(!isVisibleSpeedList);
 
   const handleCountdownEnd = () => {
     setCountDownModalVisible(false);
@@ -36,8 +45,8 @@ export default function App() {
   };
 
   const startSpeedCounter = () => {
-    setStartRace(true);
     resetCounters();
+    setStartRace(true);
     const id = setInterval(() => {
       const newSpeed = Math.floor(Math.random() * 100);
       setSpeed(newSpeed);
@@ -60,12 +69,24 @@ export default function App() {
     setAvgSpeed(0);
     setTimeElapsed(0);
     setDistance(0);
+    setStadistics([]);
   };
 
   useEffect(() => {
     const total = speedList.reduce((acc, curr) => acc + curr, 0);
     const average = total / speedList.length || 0;
     setAvgSpeed(average.toFixed(3));
+
+    const newStad = {
+      id: nextId(),
+      time: formatTime(timeElapsed),
+      speed: speed,
+      distance: distance,
+      averageSpeed: average.toFixed(3),
+    };
+
+    newStad.time != "00:00:00" &&
+      setStadistics((prevStad) => [...prevStad, newStad]);
   }, [speedList]);
 
   const formatTime = (seconds) => {
@@ -77,6 +98,14 @@ export default function App() {
       .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
+  const onHandlerModaDelete = (id) => {
+    /* Falta implementar el modal */
+    deleteStadistic(id);
+  };
+
+  const deleteStadistic = (id) => {
+    setStadistics(stadistics.filter((stadistics) => stadistics.id != id));
+  };
   const medidores = [
     {
       title: "Velocidad",
@@ -123,7 +152,14 @@ export default function App() {
           <Text className=" dark:text-white ml-2">Dark</Text>
         </View>
       </View>
-      <View className="h-2/5 w-full, justify-center items-center ">
+      <View className="h-2/5 w-full, flex-col justify-center items-center ">
+        <View className="flex-row w-full px-12 mb-3 items-start justify-between ">
+          <Text className=" text-neutral-900 dark:text-gray-400 ">
+            Velocidad Promedio
+          </Text>
+          <Text>{"   "}</Text>
+          <Text className=" text-neutral-900  dark:text-teal-400  ">km/h</Text>
+        </View>
         <Text
           className="text-8xl text-gray-900 dark:text-teal-400 "
           style={{ fontFamily: "digital_counter_7" }}
@@ -192,7 +228,73 @@ export default function App() {
         </View>
         <View className="w-1/4">
           {!startRace && speedList.length > 1 && (
-            <Button title="ver datos" color="grey" />
+            <>
+              <Button
+                title="ver datos"
+                color="grey"
+                onPress={handleModalSpeedList}
+              />
+
+              {isVisibleSpeedList && (
+                <Modal visible={isVisibleSpeedList} animationType="slide">
+                  <View className="bg-slate-200 dark:bg-slate-900 justify-center items-center">
+                    <Text className=" text-slate-900 dark:text-slate-100 h-8 text-2xl m-3 mt-4">
+                      Estadisticas
+                    </Text>
+
+                    <View className="flex-row gap-4 pt-2 justify-evenly ">
+                      <Text className=" text-slate-900 dark:text-slate-100 h-8 text-l ">
+                        Tiempo
+                      </Text>
+                      <Text className=" text-slate-900 dark:text-slate-100 h-8 text-l ">
+                        Distancia
+                      </Text>
+                      <Text className=" text-slate-900 dark:text-slate-100 h-8 text-l ">
+                        Velocidad
+                      </Text>
+                      <Text className=" text-slate-900 dark:text-slate-100 h-8 text-l ">
+                        Vel Promedio
+                      </Text>
+                      <Text className=" text-slate-900 dark:text-slate-100 h-8 text-l ">
+                        Borrar
+                      </Text>
+                    </View>
+                  </View>
+                  <FlatList
+                    className="flex-1  bg-slate-200 dark:bg-slate-900"
+                    data={stadistics}
+                    keyExtractor={(item) => item.time}
+                    renderItem={({ item }) => (
+                      <View className="flex-row gap-2 justify-evenly items-center my-2 h-12  bg-white dark:bg-slate-800">
+                        <Text className=" text-slate-900 dark:text-slate-100 text-xl">
+                          {item.time}
+                        </Text>
+                        <Text className=" text-slate-900 dark:text-slate-100 text-xl">
+                          {" "}
+                          {item.distance.toFixed(2)}
+                        </Text>
+                        <Text className=" text-slate-900 dark:text-slate-100 text-xl">
+                          {" "}
+                          {item.speed}
+                        </Text>
+                        <Text className=" text-slate-900 dark:text-slate-100 text-xl">
+                          {" "}
+                          {item.averageSpeed}
+                        </Text>
+                        <View className="w-16  ">
+                          <Button
+                            title="Del"
+                            color="red"
+                            onPress={() => onHandlerModaDelete(item.id)}
+                          />
+                        </View>
+                      </View>
+                    )}
+                  />
+                  <Button title="Cerrar" onPress={handleModalSpeedList} />
+                </Modal>
+              )}
+            </>
           )}
         </View>
         <View className="w-1/3">
@@ -202,19 +304,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  basicDataBar: {
-    marginTop: 20,
-    height: 30,
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-
-  text: {
-    fontSize: 48,
-    textAlign: "center",
-  },
-});

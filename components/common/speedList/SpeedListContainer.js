@@ -1,9 +1,8 @@
 import SpeedList from "./SpeedList";
 
-const SpeedListContainer = () => {
-  const [modalVisible, setmodalVisible] = useState(false);
-
-  return <SpeedList modalVisible={modalVisible} />;
+const SpeedListContainer = ({ isVisible }) => {
+  console.log(isVisible);
+  return <SpeedList isVisible={isVisible} />;
 };
 
 export default SpeedListContainer;
