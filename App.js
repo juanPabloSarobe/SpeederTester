@@ -9,17 +9,19 @@ import {
   Switch,
   Modal,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
 import CountDown from "./components/common/CountDown";
 import nextId from "react-id-generator";
+import TestProxy from "./components/common/TestProxy";
 
 export default function App() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
 
-  const [fontLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     digital_counter_7: require("./assets/fonts/digital_counter_7.ttf"),
   });
 
@@ -129,6 +131,19 @@ export default function App() {
       textSize: 30,
     },
   ];
+
+  if (!fontsLoaded && !fontError) {
+    return (
+      <>
+        <View className="flex-1 justify-center dark:bg-slate-900 ">
+          <ActivityIndicator
+            size={50}
+            className="text-gray-900 dark:text-white "
+          />
+        </View>
+      </>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -301,6 +316,7 @@ export default function App() {
           <Button title="restart" onPress={resetCounters} />
         </View>
       </View>
+      <TestProxy />
     </SafeAreaView>
   );
 }
